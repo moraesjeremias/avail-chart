@@ -1,0 +1,38 @@
+replicaCount: 1
+image:
+  repository: availj/avail
+  pullPolicy: IfNotPresent
+  tag: "v1.7.2"
+imagePullSecrets: []
+nameOverride: "avail-node"
+fullnameOverride: ""
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+service:
+  rpcPort: 9933
+  p2pPort: 30333
+  type: ClusterIP
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+nodeSelector: {}
+tolerations: []
+affinity: {}
+persistence:
+  storageClassName: "local-path"
+  size: 50Gi
+  name: avail-light-ledger
+  mountPath: "/da/state"
+node:
+  name: "captain_raccoon_k8s"
+  extraCliFlags:
+    - --rpc-methods=unsafe
