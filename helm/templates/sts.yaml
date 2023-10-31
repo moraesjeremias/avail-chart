@@ -32,15 +32,13 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ["/da/bin/data-avail"]
+          envFrom:
+            - configMapRef:
+                name: {{ include "helm.configmapName" . }}
           args:
-            - --chain=kate
-            - --name={{ .Values.node.name }}
             - --rpc-external
             - --rpc-port={{ .Values.service.rpcPort }}
             - --rpc-cors=all
-            - --port={{ .Values.service.p2pPort }}
-            - --base-path={{ .Values.persistence.mountPath }}
             {{- range .Values.node.extraCliFlags }}
             - {{ . }}
             {{- end }}            

@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "helm.configmapName" . }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+data:
+    DA_NAME: {{ .Values.node.name }}
+    DA_CHAIN: {{ .Values.node.chain }}
+    DA_P2P_PORT: {{ .Values.service.p2pPort | quote }}
