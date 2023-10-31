@@ -34,5 +34,6 @@ persistence:
   mountPath: "/da/state"
 node:
   name: "captain_raccoon_k8s"
+  chain: kate
   extraCliFlags:
     - --rpc-methods=unsafe
