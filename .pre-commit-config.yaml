@@ -1,0 +1,23 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: c4a0b88
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: '8713140'
+    hooks:
+      - id: yamllint
+        exclude: (.*/templates/|.*.helmfile.yaml) # templating breaks yaml parser
+        verbose: true
+  - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+    rev: 8d1b9ca
+    # if this hook spits Python errors, check if the breaking file is using templates and if the syntax is valid
+    hooks:
+      - id: yamlfmt
+        exclude: (..*/templates/|.*.helmfile.yaml|.*cloud-config.*\.yaml)
+        args: [--mapping, "2", --sequence, "4", --offset, "2", --preserve-quotes]
