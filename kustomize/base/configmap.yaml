@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: avail-node-envs
+  namespace: blockchain
+  labels:
+    app.kubernetes.io/instance: avail-node
+    app.kubernetes.io/name: avail-node
+    app.kubernetes.io/version: 1.7.2
+data:
+  DA_NAME: avail_k8s
+  DA_CHAIN: kate
+  DA_P2P_PORT: "30333"

@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: avail-node
+  namespace: blockchain
+  labels:
+    app.kubernetes.io/name: avail-node
+    app.kubernetes.io/instance: avail-node
+    app.kubernetes.io/version: "1.7.2"
+spec:
+  serviceName: avail-node
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: avail-node
+      app.kubernetes.io/instance: avail-node
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: avail-node
+        app.kubernetes.io/instance: avail-node
+    spec:
+      serviceAccountName: avail-node
+      containers:
+        - name: avail-node
+          image: "availj/avail:v1.7.2"
+          envFrom:
+            - configMapRef:
+                name: avail-node-envs
+          args:
+            - --rpc-external
+            - --rpc-port=9933
+            - --rpc-cors=all
+            - --rpc-methods=unsafe
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: rpc
+              containerPort: 9933
+              protocol: TCP
+            - name: p2p
+              containerPort: 30333
+              protocol: TCP
+          volumeMounts:
+            - name: avail-node-ledger
+              mountPath: /da/state
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: avail-node-ledger
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 50Gi

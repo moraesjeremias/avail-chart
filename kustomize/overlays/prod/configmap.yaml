@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: avail-node-envs
+  namespace: blockchain
+data:
+  DA_NAME: avail_kate_k8s_node
